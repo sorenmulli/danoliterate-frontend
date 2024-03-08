@@ -29,7 +29,6 @@ def build_hello():
     st.title("Danoliterate GLLMs")
     st.warning("The benchmark is a beta version and results are subject to change.", icon="🤖")
 
-    # TODO: Have this in an MD file
     st.write(
         """
 ## What is this?
@@ -94,7 +93,7 @@ def build_metric_selection_sidebar(results: list[Result]):
                     res.chosen_metric = next(
                         metric for metric in res.metrics if metric.name == selected_metric
                     )
-                st.caption(f"Currently showing: {selected_metric}.")  # TODO: Add description
+                st.caption(f"Currently showing: {selected_metric}.")
         st.form_submit_button(label="Submit")
 
 

@@ -1,7 +1,6 @@
 from ..backend.data import Metric, Result, ResultDump
 
 
-# TODO: Have this as an asset
 DIMENSIONS_TO_METRICS = {
     "Capability": [
         "Accuracy (NLG Parsing of chosen option)",
@@ -29,7 +28,6 @@ DIMENSIONS_TO_METRICS = {
     ],
 }
 
-# TODO: Order better
 SCENARIOS = [
     "Da. Cloze Self Test",
     "Da. Gym 2000",
