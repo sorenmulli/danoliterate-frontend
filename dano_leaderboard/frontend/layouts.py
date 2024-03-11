@@ -133,6 +133,9 @@ def build_leaderboard():
             },
         },
     )
+    st.caption(
+        f"Newest evaluation was from {result_dump.last_change} using [sorenmulli/danoliterate](https://github.com/sorenmulli/danoliterate) @ `{result_dump.last_commit[:6]}`."
+    )
 
 
 def build_scenarios():
