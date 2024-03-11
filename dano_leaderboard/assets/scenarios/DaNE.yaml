@@ -1,5 +1,5 @@
-N: 999
-description: Test
+N: 256
+description: Perform NER.
 details: Abe
-link: https://huggingface.co/datasets/sorenmulli/citizenship-test-da
+link: https://huggingface.co/datasets/ScandEval/dane-mini
 scenario: DaNE

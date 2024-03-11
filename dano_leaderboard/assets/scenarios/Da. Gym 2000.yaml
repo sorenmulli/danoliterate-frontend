@@ -1,5 +1,5 @@
-N: 999
-description: Test
+N: 50
+description: Pick right reading comprehension high school answer.
 details: Abe
-link: https://huggingface.co/datasets/sorenmulli/citizenship-test-da
+link: https://huggingface.co/datasets/sorenmulli/da-gym-2000
 scenario: Da. Gym 2000

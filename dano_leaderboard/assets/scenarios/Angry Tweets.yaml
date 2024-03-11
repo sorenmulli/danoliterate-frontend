@@ -1,5 +1,5 @@
-N: 99
-description: Test
+N: 256
+description: Classify tweet sentiment.
 details: Abe
-link: https://huggingface.co/datasets/sorenmulli/citizenship-test-da
+link: https://huggingface.co/datasets/ScandEval/angry-tweets-mini
 scenario: Angry Tweets
