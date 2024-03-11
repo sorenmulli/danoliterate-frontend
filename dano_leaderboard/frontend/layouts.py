@@ -27,8 +27,6 @@ def set_global_style(wide=False):
 def build_hello():
     set_global_style()
     st.title("Danoliterate GLLMs")
-    st.warning("The benchmark is a beta version and results are subject to change.", icon="🤖")
-
     st.write(
         """
 ## What is this?
@@ -101,13 +99,14 @@ def build_leaderboard():
     set_global_style(wide=True)
     st.title("Danoliterate GLLM Leaderboard")
     st.warning(
-        "The benchmark is a beta version and results are subject to change. Especially toxicity, robustness and fairness are experimental solutions.",
+        "The benchmark is still work-in-progress."
+        " Evaluation dimensions beyond capability are experimental",
         icon="🤖",
     )
     st.write(
         """
 Go to the 🇩🇰Hello page to get more details about what is going on.
-Note that the table can be expanded.
+Note that the below table can be expanded.
 """
     )
 
