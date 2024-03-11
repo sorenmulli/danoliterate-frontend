@@ -1,11 +1,13 @@
 from collections import defaultdict
 from pathlib import Path
 import streamlit as st
+import pandas as pd
 
 from ..backend.data import Result, ResultDump
 from .result_parsing import DIMENSIONS_TO_METRICS, SCENARIOS, select_results
 from .table import construct_table
 
+ASSETS_PATH = Path(__file__).parent.parent / "assets"
 RESULT_PATH = Path("out.json")
 
 
@@ -122,3 +124,29 @@ Note that the below table can be expanded.
     build_metric_selection_sidebar(result_dump.results)
     table = construct_table(result_dump, index_micro, show_missing)
     st.dataframe(table, use_container_width=True)
+
+def build_examples():
+    set_global_style()
+    st.title("Danoliterate GLLM Prediction Examples")
+    st.write(
+"""
+Inspect some model outputs on the benchmark from selected models
+"""
+    )
+    scenarios = {
+        scenario.stem.replace(".csv", ""): pd.read_csv(scenario, index_col=0)
+        for scenario in sorted(
+            (ASSETS_PATH / "example-outputs").resolve()
+            .glob("*.csv")
+        )
+    }
+    chosen_scenario = st.selectbox("Scenario", SCENARIOS) or SCENARIOS[0]
+    data = scenarios[chosen_scenario]
+    chosen_model = st.selectbox("Model", [col for col in data.columns if col != "prompt"])
+    if st.button("Show output examples"):
+        for label, row in data.iterrows():
+            st.markdown(f"### Prompt {label}")
+            st.code(row["prompt"], language=None)
+            st.markdown(f"### {chosen_model} Generation {label}")
+            st.code(row[chosen_model], language=None)
+            st.divider()
