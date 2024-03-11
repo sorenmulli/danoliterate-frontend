@@ -29,14 +29,14 @@ DIMENSIONS_TO_METRICS = {
 }
 
 SCENARIOS = [
+    "Citizenship Test",
+    "HyggeSwag",
+    "#twitterhjerne",
     "Da. Cloze Self Test",
     "Da. Gym 2000",
-    "DaNE",
-    "#twitterhjerne",
-    "HyggeSwag",
-    "Angry Tweets",
     "Nordjylland News",
-    "Citizenship Test",
+    "DaNE",
+    "Angry Tweets",
 ]
 
 
