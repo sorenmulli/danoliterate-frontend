@@ -1,0 +1,4 @@
+closed: false
+description: 'A dummy model that outputs a constant sequence. '
+instruct: false
+model: Constant Baseline

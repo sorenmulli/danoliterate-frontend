@@ -1,12 +1,17 @@
 from pandas.io.formats.style import Styler
+
 from ..backend.data import Metric, ResultDump
+from .details import MODEL_DICT, SCENARIOS
 import pandas as pd
 import numpy as np
+import re
 
 
 WIN_EMOJI = "🏆"
-INDEX_TITLE = WIN_EMOJI + "Avg. Index"
 TOP_THREE_EMOJIS = "🥇", "🥈", "🥉"
+CLOSED_EMOJI = "🔒"
+INSTRUCT_EMOJI = "🎯"
+LINK_EMOJI = "🔗"
 
 
 def build_metric_table(dump: ResultDump, show_missing=False) -> pd.DataFrame:
@@ -74,18 +79,43 @@ def calculate_index(df: pd.DataFrame, micro=True):
     return mean_idx, top_threes
 
 
+def format_model_name(model: str) -> str:
+    if (details := MODEL_DICT.get(model)) is None:
+        return model
+    if details.get("closed"):
+        model += CLOSED_EMOJI
+    if details.get("instruct"):
+        model += INSTRUCT_EMOJI
+    return model
+
+
+def format_link(model: str):
+    link = "-".join(re.sub(r"\W+", "", part) for part in model.lower().split())
+    return "/Models#" + link
+
+
+def add_metadata_columns(df: pd.DataFrame) -> pd.DataFrame:
+    model_details = [MODEL_DICT.get(model, {}) for model in df.index]
+    df[CLOSED_EMOJI] = [details.get("closed", False) for details in model_details]
+    df[INSTRUCT_EMOJI] = [details.get("instruct", False) for details in model_details]
+    df[LINK_EMOJI] = [
+        format_link(details["model"]) if details.get("model", "") else None
+        for details in model_details
+    ]
+    return df
+
+
 def style(styler: Styler):
-    styler.background_gradient(vmin=0, vmax=100, subset=[INDEX_TITLE])
+    styler.background_gradient(vmin=0, vmax=100, subset=[WIN_EMOJI])
+    styler.format(lambda url: "Click" if url else "", subset=[LINK_EMOJI])
     return styler
 
 
 def construct_table(dump: ResultDump, micro=True, show_missing=False):
     df = build_metric_table(dump, show_missing)
     mean_idx, top_threes = calculate_index(df, micro=micro)
-    df[INDEX_TITLE] = [_space(str(round(score * 100))) for score in mean_idx]
-    df = df[[INDEX_TITLE, *[col for col in df.columns if col != INDEX_TITLE]]].sort_values(
-        INDEX_TITLE, ascending=False
-    )
+    df[WIN_EMOJI] = [_space(str(round(score * 100))) for score in mean_idx]
+    df = df.sort_values(WIN_EMOJI, ascending=False)
 
     for model in df.index:
         for scenario in df.columns:
@@ -96,4 +126,14 @@ def construct_table(dump: ResultDump, micro=True, show_missing=False):
     for scenario, top_three in top_threes.items():
         for model, emoji in zip(top_three, TOP_THREE_EMOJIS):
             df.at[model, scenario] = df[scenario][model] + emoji
+    df = add_metadata_columns(df)
+    df = df[
+        [
+            INSTRUCT_EMOJI,
+            CLOSED_EMOJI,
+            LINK_EMOJI,
+            WIN_EMOJI,
+            *[scenario["scenario"] for scenario in SCENARIOS],
+        ]
+    ]
     return df.style.pipe(style)

@@ -1,0 +1,4 @@
+closed: true
+description: OpenAI's largest model
+instruct: false
+model: OpenAI Babbage 002

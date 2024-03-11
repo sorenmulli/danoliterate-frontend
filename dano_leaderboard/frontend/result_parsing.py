@@ -28,17 +28,6 @@ DIMENSIONS_TO_METRICS = {
     ],
 }
 
-SCENARIOS = [
-    "Citizenship Test",
-    "HyggeSwag",
-    "#twitterhjerne",
-    "Da. Cloze Self Test",
-    "Da. Gym 2000",
-    "Nordjylland News",
-    "DaNE",
-    "Angry Tweets",
-]
-
 
 def filter_available(metrics: list[Metric], dimension: str):
     approved_metrics = DIMENSIONS_TO_METRICS[dimension]

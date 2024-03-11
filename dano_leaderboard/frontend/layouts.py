@@ -4,11 +4,12 @@ import streamlit as st
 import pandas as pd
 
 from ..backend.data import Result, ResultDump
-from .result_parsing import DIMENSIONS_TO_METRICS, SCENARIOS, select_results
-from .table import construct_table
+from .result_parsing import DIMENSIONS_TO_METRICS, select_results
+from .table import CLOSED_EMOJI, INSTRUCT_EMOJI, LINK_EMOJI, WIN_EMOJI, construct_table
+from .details import METRIC_DICT, MODELS, SCENARIOS
 
 ASSETS_PATH = Path(__file__).parent.parent / "assets"
-RESULT_PATH = Path("out.json")
+RESULT_PATH = ASSETS_PATH / "result.json"
 
 
 def set_global_style(wide=False):
@@ -67,7 +68,8 @@ def group_results_by_metrics(results: list[Result]):
 
 def build_metric_selection_sidebar(results: list[Result]):
     with st.sidebar, st.form(key="metric_selection"):
-        for scenario in SCENARIOS:
+        for scenario_dict in SCENARIOS:
+            scenario = scenario_dict["scenario"]
             scenario_res = [res for res in results if res.scenario == scenario]
             if not scenario_res:
                 continue
@@ -85,7 +87,7 @@ def build_metric_selection_sidebar(results: list[Result]):
                 )
                 selected_metric = st.selectbox(
                     f"Metric for {model_names}",
-                    list(metrics),
+                    options,
                     index=options.index(result_group[0].chosen_metric.name),
                     key=scenario + model_names,
                 )
@@ -93,7 +95,12 @@ def build_metric_selection_sidebar(results: list[Result]):
                     res.chosen_metric = next(
                         metric for metric in res.metrics if metric.name == selected_metric
                     )
-                st.caption(f"Currently showing: {selected_metric}.")
+                st.caption(
+                    f"Currently showing: {selected_metric}.",
+                    help=METRIC_DICT[selected_metric]["description"]
+                    if selected_metric in METRIC_DICT
+                    else "",
+                )
         st.form_submit_button(label="Submit")
 
 
@@ -103,19 +110,24 @@ def build_leaderboard():
     st.warning(
         "The benchmark is still work-in-progress."
         " Evaluation dimensions beyond capability are experimental",
-        icon="🤖",
+        icon="⌛",
     )
     st.write(
-        """
-Go to the 🇩🇰Hello page to get more details about what is going on.
-Note that the below table can be expanded.
+        f"""
+- Visit the [🇩🇰 Hello](/Hello) page to get an overview of what this is.
+- Note that the below table can be expanded.
+- Hover over table column headers for more details.
+- See left sidebar for metric details and to change displayed metrics.
+- Visit the [📚 Scenarios](/Scenarios) page to read about each evaluation scenario.
+- Visit the [🤖 Models](/Models) page to read about tested models.
 """
     )
 
     result_dump = fetch_results_cached()
 
     show_missing = st.checkbox("Include models with missing values")
-    index_micro = st.selectbox("Index Average", ["Micro Avg.", "Macro Avg."]) == "Micro Avg."
+    index_type = st.selectbox("Index Average", ["Micro Avg.", "Macro Avg."])
+    index_micro = index_type == "Micro Avg."
     chosen_dimension = (
         st.selectbox("Evaluation Dimension", DIMENSIONS_TO_METRICS.keys())
         or list(DIMENSIONS_TO_METRICS.keys())[0]
@@ -123,24 +135,84 @@ Note that the below table can be expanded.
     select_results(result_dump, chosen_dimension)
     build_metric_selection_sidebar(result_dump.results)
     table = construct_table(result_dump, index_micro, show_missing)
-    st.dataframe(table, use_container_width=True)
+    st.dataframe(
+        table,
+        use_container_width=True,
+        column_config={
+            INSTRUCT_EMOJI: st.column_config.Column(
+                help="Checked if model has been instruct-tuned."
+            ),
+            CLOSED_EMOJI: st.column_config.Column(
+                help="Checked if model weights have not been made openly available."
+            ),
+            WIN_EMOJI: st.column_config.Column(
+                help=f"{index_type} of scenario index scores where 100=best, 0=worst."
+            ),
+            LINK_EMOJI: st.column_config.LinkColumn(help="Link to model details."),
+            **{
+                scenario["scenario"]: st.column_config.Column(help=scenario["description"])
+                for scenario in SCENARIOS
+            },
+        },
+    )
+
+
+def build_scenarios():
+    set_global_style()
+    st.title("Danoliterate Benchmark Scenarios")
+    st.write(
+        """
+Read descriptions of scenarios used for the benchmark.
+For more details, read the original Master's thesis chapters 4.2 and 5.3: [''Are GLLMs Danoliterate? Benchmarking Generative NLP in Danish''](https://sorenmulli.github.io/thesis/thesis.pdf).
+"""
+    )
+    for scenario in SCENARIOS:
+        st.subheader(scenario["scenario"])
+        st.caption(scenario["description"])
+        col1, col2 = st.columns(2)
+        col1.metric(label="Number of Examples", value=scenario["N"])
+        col2.page_link(scenario["link"], label="Dataset Card", icon="🤗")
+        st.write(scenario["details"])
+        st.divider()
+
+
+def build_models():
+    set_global_style()
+    st.title("Danoliterate Benchmarked GLLMs")
+    st.write(
+        """
+See below for description of evaluated models.
+To be sure to get accurate details, consult original model creators.
+"""
+    )
+    for model in MODELS:
+        st.subheader(model["model"])
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric("Openly Available Weights?", value="No" if model["closed"] else "Yes")
+        col2.metric("Instruct-tuned?", value="Yes" if model["instruct"] else "No")
+        col3.metric("Parameter Count [Billions]", value=model.get("params"))
+        if link := model.get("link"):
+            col4.page_link(link, label="Model link", icon="🤗" if "huggingface" in link else "🔗")
+        st.write(model["description"])
+        st.divider()
+
 
 def build_examples():
     set_global_style()
     st.title("Danoliterate GLLM Prediction Examples")
     st.write(
-"""
-Inspect some model outputs on the benchmark from selected models
+        """
+Inspect some model outputs on the benchmark from selected models.
 """
     )
     scenarios = {
         scenario.stem.replace(".csv", ""): pd.read_csv(scenario, index_col=0)
-        for scenario in sorted(
-            (ASSETS_PATH / "example-outputs").resolve()
-            .glob("*.csv")
-        )
+        for scenario in sorted((ASSETS_PATH / "example-outputs").resolve().glob("*.csv"))
     }
-    chosen_scenario = st.selectbox("Scenario", SCENARIOS) or SCENARIOS[0]
+    chosen_scenario = (
+        st.selectbox("Scenario", [scenario["scenario"] for scenario in SCENARIOS])
+        or SCENARIOS[0]["scenario"]
+    )
     data = scenarios[chosen_scenario]
     chosen_model = st.selectbox("Model", [col for col in data.columns if col != "prompt"])
     if st.button("Show output examples"):
