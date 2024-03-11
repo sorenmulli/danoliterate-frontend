@@ -79,16 +79,6 @@ def calculate_index(df: pd.DataFrame, micro=True):
     return mean_idx, top_threes
 
 
-def format_model_name(model: str) -> str:
-    if (details := MODEL_DICT.get(model)) is None:
-        return model
-    if details.get("closed"):
-        model += CLOSED_EMOJI
-    if details.get("instruct"):
-        model += INSTRUCT_EMOJI
-    return model
-
-
 def format_link(model: str):
     link = "-".join(re.sub(r"\W+", "", part) for part in model.lower().split())
     return "/Models#" + link

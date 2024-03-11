@@ -1,5 +1,5 @@
 N: 125
 description: Pick commonsense text continuation.
-details: Abe
 link: https://huggingface.co/datasets/sorenmulli/hyggeswag
 scenario: HyggeSwag
+details: Abe

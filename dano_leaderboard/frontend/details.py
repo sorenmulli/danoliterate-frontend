@@ -1,7 +1,7 @@
 import yaml
 from pathlib import Path
 
-ASSETS_PATH = Path(__file__).parent.parent / "assets"
+from ..constants import ASSETS_PATH
 
 _MODELS = [
     "OpenAI GPT 4",

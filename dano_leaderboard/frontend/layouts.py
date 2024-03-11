@@ -1,15 +1,12 @@
 from collections import defaultdict
-from pathlib import Path
 import streamlit as st
 import pandas as pd
 
 from ..backend.data import Result, ResultDump
+from ..constants import ASSETS_PATH, RESULT_PATH
 from .result_parsing import DIMENSIONS_TO_METRICS, select_results
 from .table import CLOSED_EMOJI, INSTRUCT_EMOJI, LINK_EMOJI, WIN_EMOJI, construct_table
 from .details import METRIC_DICT, MODELS, SCENARIOS
-
-ASSETS_PATH = Path(__file__).parent.parent / "assets"
-RESULT_PATH = ASSETS_PATH / "result.json"
 
 
 def set_global_style(wide=False):
@@ -30,28 +27,9 @@ def set_global_style(wide=False):
 def build_hello():
     set_global_style()
     st.title("Danoliterate GLLMs")
-    st.write(
-        """
-## What is this?
-This site presents the :sparkles: Danoliterate Generative Large Language Model Benchmark :sparkles:, evaluating how well models like ChatGPT, LlaMa or Mistral perform in Danish.
-## Where can I see it?
-Press `leaderboard` in the left sidebar to see how the models were ranked.
-To inspect some specific examples of what the models generate, press `examples`.
-## How can I learn more?
-Currently, the main documentation for this benchmark is the Master's Thesis
-[''Are GLLMs Danoliterate? Benchmarking Generative NLP in Danish''](https://sorenmulli.github.io/thesis/thesis.pdf).
-The implementation is open and can be found on [sorenmulli/danoliterate](https://github.com/sorenmulli/danoliterate):
-Please follow along and participate!
-## Who made this?
-This is part of a Master's Thesis produced by Søren Vejlgaard Holm at the DTU Compute in collaboration with [Alvenir](https://www.alvenir.ai/).
-It was supervised by
-- Lars Kai Hansen, DTU Compute
-
-- Martin Carsten Nielsen, Alvenir
-
-The work was supported by the Pioneer Centre for AI.
-"""
-    )
+    with open(ASSETS_PATH / "hello.md", "r", encoding="utf-8") as file:
+        hello_content = file.read()
+    st.write(hello_content)
 
 
 @st.cache_data
@@ -114,12 +92,12 @@ def build_leaderboard():
     )
     st.write(
         f"""
-- Visit the [🇩🇰 Hello](/Hello) page to get an overview of what this is.
+- Visit the 🇩🇰 Hello page to get an overview of what this is.
 - Note that the below table can be expanded.
 - Hover over table column headers for more details.
 - See left sidebar for metric details and to change displayed metrics.
-- Visit the [📚 Scenarios](/Scenarios) page to read about each evaluation scenario.
-- Visit the [🤖 Models](/Models) page to read about tested models.
+- Visit the 📚 Scenarios page to read about each evaluation scenario.
+- Visit the 🤖 Models page to read about tested models.
 """
     )
 
@@ -163,6 +141,9 @@ def build_scenarios():
     st.write(
         """
 Read descriptions of scenarios used for the benchmark.
+
+See examples of data and prompting on the 🔎Examples page.
+
 For more details, read the original Master's thesis chapters 4.2 and 5.3: [''Are GLLMs Danoliterate? Benchmarking Generative NLP in Danish''](https://sorenmulli.github.io/thesis/thesis.pdf).
 """
     )
@@ -188,7 +169,12 @@ To be sure to get accurate details, consult original model creators.
     for model in MODELS:
         st.subheader(model["model"])
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Openly Available Weights?", value="No" if model["closed"] else "Yes")
+        col1.metric(
+            "Openly Available?",
+            value="No" if model["closed"] else "Yes",
+            delta="Weights inaccesible" if model["closed"] else "Open-source weights",
+            delta_color="inverse" if model["closed"] else "normal",
+        )
         col2.metric("Instruct-tuned?", value="Yes" if model["instruct"] else "No")
         col3.metric("Parameter Count [Billions]", value=model.get("params"))
         if link := model.get("link"):

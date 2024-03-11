@@ -1,5 +1,8 @@
 N: 605
 description: Pick right answer to Danish culture questions.
-details: Abe
 link: https://huggingface.co/datasets/sorenmulli/citizenship-test-da
 scenario: Citizenship Test
+details: |
+  - The Citizenship Test dataset was produced by scraping Danish governmental citizenship multiple-choice tests seeking to test familiarity with Danish societal structures as well as Danish culture and history.
+  - The models are required to pick one of four possible answers and the accuracy is reported.
+  - This scenario directly tests model knowledge-based Q/A ability for Danish society, history and culture.
