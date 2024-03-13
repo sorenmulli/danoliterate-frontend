@@ -1,5 +1,8 @@
 N: 50
 description: Pick right reading comprehension high school answer.
-details: Abe
 link: https://huggingface.co/datasets/sorenmulli/da-gym-2000
 scenario: Da. Gym 2000
+details: |
+  - Like Da. Cloze Self Test, scraped from CRR, this one from [''Reading Texts for Gymnasium''](http://static.uvm.dk/Publikationer/2000/laesetekster/).
+  - Contains three texts, each with 6-16 multiple choice comprehension or analysis questions across Danish prose, poetry and scientific text.
+  - Models get a context text part and must pick the right answer option.

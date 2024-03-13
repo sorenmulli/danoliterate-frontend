@@ -1,5 +1,8 @@
 N: 256
 description: Classify tweet sentiment.
-details: Abe
 link: https://huggingface.co/datasets/ScandEval/angry-tweets-mini
 scenario: Angry Tweets
+details: |
+  - A sentiment classification dataset on Danish tweets released in [''DaNLP: An open-source toolkit for Danish Natural Language Processing''](https://aclanthology.org/2021.nodalida-main.53/).
+  - Contains tweets each annotated as of either positive, negative or neutral sentiment.
+  - The model is required to perform this zero-shot classification.

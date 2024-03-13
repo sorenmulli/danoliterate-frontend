@@ -1,5 +1,8 @@
 N: 78
 description: Write a tweet answering a question tweet.
-details: Abe
 link: https://huggingface.co/datasets/sorenmulli/da-hashtag-twitterhjerne
 scenario: '#twitterhjerne'
+details: |
+  - \#twitterhjerne is a small dataset of tweets containing questions or asking for input along with a number of replies for each question.
+  - The scenario was created by displaying the question tweet, and requiring the model to write a helpful reply, evaluating by comparing the model reply with the human replies to that tweet, taking the human versions as ground truth references.
+  - The main metric is odd-one-out frequency: We use BERT similarity with the [DFM Encoder Large model](https://huggingface.co/danish-foundation-models/encoder-large-v1) to find reply least similar to the others and count how often this is the model generation.

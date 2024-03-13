@@ -150,14 +150,15 @@ See examples of data and prompting on the 🔎Examples page.
 For more details, read the original Master's thesis chapters 4.2 and 5.3: [''Are GLLMs Danoliterate? Benchmarking Generative NLP in Danish''](https://sorenmulli.github.io/thesis/thesis.pdf).
 """
     )
-    for scenario in SCENARIOS:
+    for i, scenario in enumerate(SCENARIOS):
+        if i:
+            st.divider()
         st.subheader(scenario["scenario"])
         st.caption(scenario["description"])
         col1, col2 = st.columns(2)
         col1.metric(label="Number of Examples", value=scenario["N"])
         col2.page_link(scenario["link"], label="Dataset Card", icon="🤗")
         st.write(scenario["details"])
-        st.divider()
 
 
 def build_models():
@@ -169,7 +170,9 @@ See below for description of evaluated models.
 To be sure to get accurate details, consult original model creators.
 """
     )
-    for model in MODELS:
+    for i, model in enumerate(MODELS):
+        if i:
+            st.divider()
         st.subheader(model["model"])
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(
@@ -183,7 +186,6 @@ To be sure to get accurate details, consult original model creators.
         if link := model.get("link"):
             col4.page_link(link, label="Model link", icon="🤗" if "huggingface" in link else "🔗")
         st.write(model["description"])
-        st.divider()
 
 
 def build_examples():

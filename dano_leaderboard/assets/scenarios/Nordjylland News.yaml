@@ -1,5 +1,8 @@
 N: 300
 description: Summarise a news text.
-details: Abe
 link: https://huggingface.co/datasets/sorenmulli/nordjylland-news-summarization-subset
 scenario: Nordjylland News
+details: |
+  - A summarization dataset on TV2 Nord articles released by the [Alexandra Institute](https://huggingface.co/datasets/alexandrainst/nordjylland-news-summarization).
+  - Models were prompted to write one-sentence summaries of the short news articles.
+  - The metric is BERT score semantic similarity using the [DFM Encoder Large model](https://huggingface.co/danish-foundation-models/encoder-large-v1) between model-generated summary and ground-truth, human summary.

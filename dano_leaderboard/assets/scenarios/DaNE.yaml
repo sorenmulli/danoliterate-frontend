@@ -1,5 +1,8 @@
 N: 256
 description: Perform NER.
-details: Abe
 link: https://huggingface.co/datasets/ScandEval/dane-mini
 scenario: DaNE
+details: |
+  - The central Danish benchmark for Named Entity Recognition (NER) annotating Danish 80s literature into the categories: person, organisation, location and miscellaneuous produced in [''DaNE: A Named Entity Resource for Danish''](https://www.aclweb.org/anthology/2020.lrec-1.565).
+  - For GLLMs, the scenario was implemented using 3-shot prompting following the multiprompt [GPT NER](https://arxiv.org/abs/2304.10428) method.
+  - Micro average NER F1 score over all four classes is reported.

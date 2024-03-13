@@ -2,4 +2,7 @@ N: 125
 description: Pick commonsense text continuation.
 link: https://huggingface.co/datasets/sorenmulli/hyggeswag
 scenario: HyggeSwag
-details: Abe
+details: |
+  - HyggeSwag was produced by manual translation of a subset of the [HellaSwag](https://aclanthology.org/P19-1472/) commonsense natural language inference dataset into Danish.
+  - Randomly selected ActivityNet captions, max one per video, were manually translated and validated by a second person.
+  - The model is required to pick one out of four text completions that using commonsense reasoning is correct.

@@ -1,5 +1,8 @@
 N: 33
 description: Pick right word cloze choice.
-details: Abe
 link: https://huggingface.co/datasets/sorenmulli/da-cloze-self-test
 scenario: Da. Cloze Self Test
+details: |
+  - Was scraped from The [Centre for Reading Research](https://laes.hum.ku.dk/test/) (CRR) under the Department of Nordic Studies and Linguistics at the University of Copenhagen.
+  - This dataset from [selvtest.nu](https://selvtest.nu/); a cloze-style test, presenting a text with some words hidden, showing four possible options.
+  - The scenario was prompted to the models by giving the full text with the cloze word being masked with `<MASK>`, requiring the model to answer only with the masked word. The word options were presented to the model
