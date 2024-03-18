@@ -2,3 +2,4 @@ closed: false
 description: OpenAI's largest model
 instruct: false
 model: Heidrun Mistral 7B Base
+params: 7.24

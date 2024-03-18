@@ -2,3 +2,4 @@ closed: false
 description: OpenAI's largest model
 instruct: false
 model: Munin 7B Alpha
+params: 7.24

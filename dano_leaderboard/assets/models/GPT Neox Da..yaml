@@ -2,3 +2,4 @@ closed: false
 description: Model on Huggingface @ peter-sk/gpt-neox-da.
 instruct: false
 model: GPT Neox Da.
+params: 1.52

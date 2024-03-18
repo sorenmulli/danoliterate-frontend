@@ -2,3 +2,4 @@ closed: false
 description: OpenAI's largest model
 instruct: false
 model: Phi-2
+params: 2.78

@@ -2,3 +2,4 @@ closed: false
 description: A freshly trained, Danish-only base model.
 instruct: false
 model: Danoliterate 7B Baseline
+params: 6.61

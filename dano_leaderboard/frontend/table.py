@@ -49,7 +49,7 @@ def calc_scenario_scores(col: pd.Series):
     return (vals - vals.min()) / (vals.max() - vals.min())
 
 
-def calculate_index(df: pd.DataFrame, micro=True):
+def calculate_index(df: pd.DataFrame, micro=True, do_top_three=True):
     index_scores = df.apply(calc_scenario_scores)
 
     weights = []
@@ -73,10 +73,12 @@ def calculate_index(df: pd.DataFrame, micro=True):
     )
 
     index_scores.index = df.index
-    top_threes = {
-        scenario: index_scores[scenario].nlargest(3).index for scenario in index_scores.columns
-    }
-    return mean_idx, top_threes
+    if do_top_three:
+        top_threes = {
+            scenario: index_scores[scenario].nlargest(3).index for scenario in index_scores.columns
+        }
+        return mean_idx, top_threes
+    return mean_idx
 
 
 def format_link(model: str):

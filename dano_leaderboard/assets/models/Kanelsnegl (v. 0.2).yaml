@@ -2,3 +2,4 @@ closed: false
 description: OpenAI's largest model
 instruct: true
 model: Kanelsnegl (v. 0.2)
+params: 7.24
