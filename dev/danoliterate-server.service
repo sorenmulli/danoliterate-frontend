@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 User=swiho
-Group=swiho
+Group=unixusers
 WorkingDirectory=/home/swiho/danoliterate-frontend
 ExecStart=/bin/bash /home/swiho/danoliterate-frontend/run.sh
 Restart=always
