@@ -1,0 +1,14 @@
+[Unit]
+Description=Danoliterate Streamlit App Service
+After=network.target
+
+[Service]
+User=swiho
+Group=swiho
+WorkingDirectory=/home/swiho/danoliterate-frontend
+ExecStart=/bin/bash /home/swiho/danoliterate-frontend/run.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
