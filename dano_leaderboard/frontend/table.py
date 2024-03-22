@@ -18,9 +18,9 @@ def build_metric_table(dump: ResultDump, show_missing=False) -> pd.DataFrame:
     df = pd.DataFrame()
     for res in dump.results:
         if res.model not in df.index:
-            df.loc[res.model, :] = [float("nan")] * len(df.columns)
+            df.loc[res.model, :] = [None] * len(df.columns)
         if res.scenario not in df.columns:
-            df[res.scenario] = [float("nan")] * len(df)
+            df[res.scenario] = [None] * len(df)
         df.at[res.model, res.scenario] = res.chosen_metric
     if not show_missing:
         df = df.dropna()
