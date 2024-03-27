@@ -1,5 +1,4 @@
 closed: false
-description: OpenAI's largest model
 instruct: false
 model: LlaMa 2 7B
 params: 6.74

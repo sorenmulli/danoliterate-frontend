@@ -1,5 +1,4 @@
 closed: false
-description: OpenAI's largest model
 instruct: true
 model: Gemma 7B instruct
 params: 8.54

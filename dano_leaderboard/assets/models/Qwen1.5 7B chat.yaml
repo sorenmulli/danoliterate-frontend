@@ -1,5 +1,4 @@
 closed: false
-description: OpenAI's largest model
 instruct: true
 model: Qwen1.5 7B chat
 params: 7.72

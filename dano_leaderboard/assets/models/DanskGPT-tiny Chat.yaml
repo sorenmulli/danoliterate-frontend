@@ -1,5 +1,4 @@
 closed: false
-description: OpenAI's largest model
 instruct: true
 model: DanskGPT-tiny Chat
 params: 1.1

@@ -1,5 +1,4 @@
 closed: false
-description: OpenAI's largest model
 instruct: true
 model: Mistral 7B Instruct
 params: 7.24

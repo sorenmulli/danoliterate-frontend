@@ -1,5 +1,4 @@
 closed: false
-description: OpenAI's largest model
 instruct: true
 model: Heidrun Mistral 7B Chat
 params: 7.24

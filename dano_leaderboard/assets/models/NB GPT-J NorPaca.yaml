@@ -1,5 +1,4 @@
 closed: false
-description: OpenAI's largest model
 instruct: true
 model: NB GPT-J NorPaca
 params: 6.06

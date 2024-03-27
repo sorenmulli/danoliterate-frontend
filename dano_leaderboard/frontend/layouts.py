@@ -182,10 +182,10 @@ To be sure to get accurate details, consult original model creators.
             delta_color="inverse" if model["closed"] else "normal",
         )
         col2.metric("Instruct-tuned?", value="Yes" if model["instruct"] else "No")
-        col3.metric("Parameter Count [Billions]", value=model.get("params") or print(model))
+        col3.metric("Parameter Count [Billions]", value=model.get("params"))
         if link := model.get("link"):
             col4.page_link(link, label="Model link", icon="🤗" if "huggingface" in link else "🔗")
-        st.write(model["description"])
+        st.write(model.get("description") or "")
 
 
 def build_examples():
