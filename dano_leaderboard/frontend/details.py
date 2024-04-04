@@ -55,6 +55,16 @@ for model in _MODELS:
     with open(ASSETS_PATH / "models" / f"{model}.yaml", "r") as file:
         MODELS.append(yaml.safe_load(file))
 MODEL_DICT = {model["model"]: model for model in MODELS}
+DIMENSIONS_TO_HIDE_MODELS = {
+    "Capability": {},
+    "Efficiency": {
+        "Mixtral (@ Groq)",
+        "Constant Baseline",
+        *[model for model, details in MODEL_DICT.items() if details.get("closed", True)],
+    },
+    "Calibration": {},
+    "Toxicity": {},
+}
 
 _SCENARIOS = [
     "Citizenship Test",
