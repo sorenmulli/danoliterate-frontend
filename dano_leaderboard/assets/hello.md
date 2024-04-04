@@ -1,5 +1,5 @@
 ## :blue[What] is this?
-This site presents the :sparkles: Danoliterate Generative Large Language Model Benchmark :sparkles:, benchmark how well models like ChatGPT, LlaMa or Mistral perform in Danish across different evaluation scenarios.
+This site presents the :sparkles: Danoliterate Generative Large Language Model Benchmark :sparkles:, evaluating how well models like ChatGPT, Claude, LlaMa or Mistral perform in Danish across different use scenarios.
 
 ## :blue[Where] can I see it?
 Select 🏆 Leaderboard in the left sidebar to see how the models were ranked.
@@ -22,5 +22,5 @@ It was supervised by
 - Martin Carsten Nielsen, Alvenir
 
 ## How can I :blue[contribute]?
-By adding models, scenarios, improving code or giving your suggestions.
-Get in touch on `swiho@dtu.dk` or on [GitHub](https://github.com/sorenmulli/danoliterate).
+By adding models, scenarios, improving code or giving your suggestions!
+Get in touch on `swiho@dtu.dk` or on [the evaluation GitHub repo](https://github.com/sorenmulli/danoliterate) or for this [frontend GitHub repo](https://github.com/sorenmulli/danoliterate-frontend/).

@@ -1,6 +1,6 @@
 # Danoliterate Benchmark Leaderboard Frontend
 
-A frontend that displays a leadebaord computed using the [Danoliterate Benchmark](https://github.com/sorenmulli/danoliterate/)
+A frontend that displays a leaderboard computed using the [Danoliterate Benchmark](https://github.com/sorenmulli/danoliterate/)
 
 ## Setup
 Using Python 3.11:

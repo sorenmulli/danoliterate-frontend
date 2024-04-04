@@ -1,5 +1,5 @@
 from ..backend.data import Result, ResultDump
-from .details import DIMENSIONS_TO_HIDE_MODELS, MODEL_DICT
+from .details import DIMENSIONS_TO_HIDE_MODELS
 
 
 DIMENSIONS_TO_METRICS = {
