@@ -5,7 +5,7 @@ import pandas as pd
 from ..backend.data import Result, ResultDump
 from ..constants import ASSETS_PATH, RESULT_PATH
 from .result_parsing import DIMENSIONS_TO_METRICS, select_results
-from .table import CLOSED_EMOJI, INSTRUCT_EMOJI, LINK_EMOJI, WIN_EMOJI, construct_table
+from .table import CLOSED_EMOJI, INSTRUCT_EMOJI, PARAMS_EMOJI, WIN_EMOJI, construct_table
 from .details import METRIC_DICT, MODELS, SCENARIOS
 
 
@@ -123,14 +123,12 @@ def build_leaderboard():
             CLOSED_EMOJI: st.column_config.Column(
                 help="Checked if model weights have not been made openly available."
             ),
+            PARAMS_EMOJI:  st.column_config.Column(
+                help="Number of model parameters in billions, if known."
+            ),
             WIN_EMOJI: st.column_config.Column(
                 help=f"{index_type} of scenario index scores where 100=best, 0=worst."
             ),
-            LINK_EMOJI: st.column_config.LinkColumn(help="Link to model details."),
-            **{
-                scenario["scenario"]: st.column_config.Column(help=scenario["description"])
-                for scenario in SCENARIOS
-            },
         },
     )
     st.caption(
@@ -164,6 +162,11 @@ For more details, read the original Master's thesis chapters 4.2 and 5.3: [''Are
 def build_models():
     set_global_style()
     st.title("Danoliterate Benchmarked GLLMs")
+    st.warning(
+        "Descriptions and links to model sources are currently missing for many models"
+        " and should be added.",
+        icon="⌛",
+    )
     st.write(
         """
 See below for description of evaluated models.

@@ -11,7 +11,7 @@ WIN_EMOJI = "🏆"
 TOP_THREE_EMOJIS = "🥇", "🥈", "🥉"
 CLOSED_EMOJI = "🔒"
 INSTRUCT_EMOJI = "🎯"
-LINK_EMOJI = "🔗"
+PARAMS_EMOJI = "📏"
 
 
 def build_metric_table(dump: ResultDump, show_missing=False) -> pd.DataFrame:
@@ -88,18 +88,14 @@ def format_link(model: str):
 
 def add_metadata_columns(df: pd.DataFrame) -> pd.DataFrame:
     model_details = [MODEL_DICT.get(model, {}) for model in df.index]
-    df[CLOSED_EMOJI] = [details.get("closed", False) for details in model_details]
-    df[INSTRUCT_EMOJI] = [details.get("instruct", False) for details in model_details]
-    df[LINK_EMOJI] = [
-        format_link(details["model"]) if details.get("model", "") else None
-        for details in model_details
-    ]
+    df[CLOSED_EMOJI] = [details.get("closed", None) for details in model_details]
+    df[INSTRUCT_EMOJI] = [details.get("instruct", None) for details in model_details]
+    df[PARAMS_EMOJI] = [_space(f"{details['params']:.1f}", spacing=4) if "params" in details else "" for details in model_details]
     return df
 
 
 def style(styler: Styler):
     styler.background_gradient(vmin=0, vmax=100, subset=[WIN_EMOJI])
-    styler.format(lambda url: "Click" if url else "", subset=[LINK_EMOJI])
     return styler
 
 
@@ -123,7 +119,7 @@ def construct_table(dump: ResultDump, micro=True, show_missing=False):
         [
             INSTRUCT_EMOJI,
             CLOSED_EMOJI,
-            LINK_EMOJI,
+            PARAMS_EMOJI,
             WIN_EMOJI,
             *[scenario["scenario"] for scenario in SCENARIOS if scenario["scenario"] in df.columns],
         ]
