@@ -125,7 +125,7 @@ def construct_table(dump: ResultDump, micro=True, show_missing=False):
             CLOSED_EMOJI,
             LINK_EMOJI,
             WIN_EMOJI,
-            *[scenario["scenario"] for scenario in SCENARIOS],
+            *[scenario["scenario"] for scenario in SCENARIOS if scenario["scenario"] in df.columns],
         ]
     ]
     return df.style.pipe(style)
