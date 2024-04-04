@@ -71,7 +71,10 @@ def extract(in_path: Path, out_path: Path):
 
     normal_res_dict = {res.key: res for res in normal_results}
     for meta in meta_results:
-        normal = normal_res_dict[meta.key]
+        try:
+            normal = normal_res_dict[meta.key]
+        except KeyError as error:
+            raise ValueError(f"You have not run the normal capability version of {meta.key}") from error
         for metric in meta.metrics:
             if any(metric.name == other_metric.name for other_metric in normal.metrics):
                 raise ValueError
@@ -79,6 +82,7 @@ def extract(in_path: Path, out_path: Path):
 
     print("Added %i meta results" % len(meta_results))
     dump.results = normal_results
+    print("Finally got %i results" % len(dump.results))
     dump.serialize(out_path)
 
 

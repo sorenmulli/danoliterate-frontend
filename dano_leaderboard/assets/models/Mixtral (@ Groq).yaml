@@ -1,0 +1,5 @@
+closed: false
+instruct: true
+model: Mixtral (@ Groq)
+params: 46.7
+description: Mixtral Instruct v. 0.1 hosted on GroqCloud
