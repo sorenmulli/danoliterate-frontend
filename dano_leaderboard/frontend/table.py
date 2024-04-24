@@ -45,7 +45,7 @@ def _format_err(num):
 
 
 def calc_scenario_scores(col: pd.Series):
-    vals = pd.Series([metric.value for metric in col if isinstance(metric, Metric)])
+    vals = pd.Series([metric.value if isinstance(metric, Metric) else float("nan") for metric in col])
     return (vals - vals.min()) / (vals.max() - vals.min())
 
 
