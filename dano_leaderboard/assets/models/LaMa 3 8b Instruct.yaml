@@ -1,0 +1,4 @@
+closed: false
+instruct: true
+model: LlaMa 3 8B Instruct
+params: 8.03

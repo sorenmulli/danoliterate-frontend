@@ -1,0 +1,4 @@
+closed: false
+instruct: true
+model: Starling-LM-7B-beta
+params: 7.24

@@ -1,0 +1,4 @@
+closed: false
+instruct: true
+model: NorskGPT-Llama-3-8b-v0.1
+params: 8.03

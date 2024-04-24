@@ -1,0 +1,5 @@
+closed: false
+instruct: true
+model: LlaMa 3 70B (@ Groq)
+params: 70.6
+description: Llama3 70B Instruct hosted on GroqCloud
