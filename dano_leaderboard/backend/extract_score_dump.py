@@ -74,7 +74,9 @@ def extract(in_path: Path, out_path: Path):
         try:
             normal = normal_res_dict[meta.key]
         except KeyError as error:
-            raise ValueError(f"You have not run the normal capability version of {meta.key}") from error
+            raise ValueError(
+                f"You have not run the normal capability version of {meta.key}"
+            ) from error
         for metric in meta.metrics:
             if any(metric.name == other_metric.name for other_metric in normal.metrics):
                 raise ValueError

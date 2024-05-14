@@ -1,0 +1,12 @@
+import logging
+from pathlib import Path
+
+PAIRS_TO_SHOW = 2
+MIN_PROMPTS = 3
+
+STREAM_SLEEP = 0.075
+
+OUTPUT_DIR = Path(__file__).parent.parent.parent.parent / "survey-data"
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename="survey-server.log", level=logging.INFO)
