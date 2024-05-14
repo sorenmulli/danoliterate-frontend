@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 
-PAIRS_TO_SHOW = 2
+PAIRS_TO_SHOW = 5
 MIN_PROMPTS = 3
 
 STREAM_SLEEP = 0.075
