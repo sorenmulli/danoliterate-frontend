@@ -7,11 +7,15 @@ from ..constants import ASSETS_PATH, RESULT_PATH
 from .result_parsing import DIMENSIONS_TO_METRICS, select_results
 from .table import CLOSED_EMOJI, INSTRUCT_EMOJI, PARAMS_EMOJI, WIN_EMOJI, construct_table
 from .details import METRIC_DICT, MODELS, SCENARIOS
+from .survey.set_up import build_survey_pages
 
 
-def set_global_style(wide=False):
+def set_global_style(wide=False, title="Danoliterate Benchmark", sidebar="auto"):
     st.set_page_config(
-        "Danoliterate Benchmark", page_icon="🇩🇰", layout="wide" if wide else "centered"
+        title,
+        page_icon="🇩🇰",
+        layout="wide" if wide else "centered",
+        initial_sidebar_state=sidebar,
     )
     # Source for this:
     # https://discuss.streamlit.io/t/remove-made-with-streamlit-from-bottom-of-app/1370/17
@@ -123,7 +127,7 @@ def build_leaderboard():
             CLOSED_EMOJI: st.column_config.Column(
                 help="Checked if model weights have not been made openly available."
             ),
-            PARAMS_EMOJI:  st.column_config.Column(
+            PARAMS_EMOJI: st.column_config.Column(
                 help="Number of model parameters in billions, if known."
             ),
             WIN_EMOJI: st.column_config.Column(
@@ -216,3 +220,8 @@ Inspect some model outputs on the benchmark from selected models.
             st.markdown(f"### {chosen_model} Generation {label}")
             st.code(row[chosen_model], language=None)
             st.divider()
+
+
+def build_survey():
+    set_global_style(wide=True, title="Spørgeskema [Da.]", sidebar="collapsed")
+    build_survey_pages()

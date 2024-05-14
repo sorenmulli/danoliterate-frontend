@@ -45,7 +45,9 @@ def _format_err(num):
 
 
 def calc_scenario_scores(col: pd.Series):
-    vals = pd.Series([metric.value if isinstance(metric, Metric) else float("nan") for metric in col])
+    vals = pd.Series(
+        [metric.value if isinstance(metric, Metric) else float("nan") for metric in col]
+    )
     return (vals - vals.min()) / (vals.max() - vals.min())
 
 
@@ -90,7 +92,10 @@ def add_metadata_columns(df: pd.DataFrame) -> pd.DataFrame:
     model_details = [MODEL_DICT.get(model, {}) for model in df.index]
     df[CLOSED_EMOJI] = [details.get("closed", None) for details in model_details]
     df[INSTRUCT_EMOJI] = [details.get("instruct", None) for details in model_details]
-    df[PARAMS_EMOJI] = [_space(f"{details['params']:.1f}", spacing=4) if "params" in details else "" for details in model_details]
+    df[PARAMS_EMOJI] = [
+        _space(f"{details['params']:.1f}", spacing=4) if "params" in details else ""
+        for details in model_details
+    ]
     return df
 
 
