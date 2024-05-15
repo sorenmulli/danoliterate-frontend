@@ -71,10 +71,13 @@ def build_model_answers(
         for col, model, emoji in zip(st.columns(2), models, "🇦🇧"):
 
             def stream_data(sleep=True):
-                for word in examples[chosen_prompt]["models"][model].split(" "):
+                for i, word in enumerate(examples[chosen_prompt]["models"][model].split(" ")):
                     yield word + " "
                     if sleep:
-                        time.sleep(STREAM_SLEEP)
+                        if i < 120:
+                            time.sleep(STREAM_SLEEP)
+                        else:
+                            time.sleep(STREAM_SLEEP / 5)
 
             with col, st.container(border=True):
                 with st.chat_message("assistant"):
