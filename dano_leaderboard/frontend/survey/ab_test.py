@@ -29,6 +29,7 @@ def build_prompt_choice(
     models: tuple[str, str], examples: list[dict]
 ) -> tuple[Optional[int], bool]:
     st.subheader("1. Vælg prompts")
+    st.caption("Udforsk de seks kategorier og vælg en prompt, der interesserer dig.")
     new_chosen = False
     chosen_prompt = (
         None
@@ -61,7 +62,6 @@ def build_prompt_choice(
 def build_model_answers(
     chosen_prompt: Optional[int], new_chosen: bool, models: tuple[str, str], examples: list[dict]
 ):
-    st.subheader("2. Se modellernes svar")
     if chosen_prompt is None:
         with st.chat_message("user"):
             st.write("...")
@@ -92,19 +92,19 @@ def build_answer(models: tuple[str, str], survey: StreamlitSurvey):
     if has_seen < MIN_PROMPTS:
         progress_text = f"Du har kun set :orange[{has_seen}] forskellige eksempler. Se mindst :blue[{MIN_PROMPTS}] for at bedømme."
     else:
-        extra = " og du har fået afsløret modellerne" if was_revealed else ""
-        progress_text = "Du har set {has_seen} forskellige eksempler for disse modeller" + extra
+        extra = " og du har fået afsløret modellerne." if was_revealed else "."
+        progress_text = f"Du har set {has_seen} forskellige eksempler for disse modeller" + extra
     st.progress(min(has_seen / MIN_PROMPTS, 1), text=progress_text)
     do_disable = was_revealed or has_seen < MIN_PROMPTS
 
-    survey.radio(
-        "Hvilken model foretrak du?",
-        options=["Ved ikke", "🤖A", "🤖B"],
-        id=" ".join(models) + "-prefer",
-        horizontal=True,
-        disabled=do_disable,
-    )
-    st.divider()
+    with st.container(border=True):
+        survey.radio(
+            "Hvilken model foretrak du?",
+            options=["Ved ikke", "🤖A", "🤖B"],
+            id=" ".join(models) + "-prefer",
+            horizontal=True,
+            disabled=do_disable,
+        )
     survey.radio(
         "Hvad synes du om 🤖 A?",
         options=["Ved ikke", "😞", "🙁", "😐", "🙂", "😀"],
@@ -135,14 +135,23 @@ def build_answer(models: tuple[str, str], survey: StreamlitSurvey):
 
 def show_status_message(survey: StreamlitSurvey, pair_idx: int):
     if not pair_idx:
+        st.info(
+            "Nu er der i hemmelighed valgt to modeller for dig: 🤖A og 🤖B.\n\n Afprøv dem ved at vælge en prompt under en kategori, der interesserer dig."
+            " Se modellernes svar og få et indtryk af både A og B. Vælg nu en ny prompt og giv endelig din vurdering efter mindst 3 prompts."
+        )
         return
     prev_models_key = " ".join(st.session_state["chosen_models"][pair_idx - 1]) + "-prefer"
     if prev_models_key in survey.data and survey.data[prev_models_key]["value"] != "Ved ikke":
         success_emojis = "🔥 ", "🎇 ", "🎆 ", "👌 ", "🙌 "
         succes_emoji = success_emojis[pair_idx - 1] if pair_idx <= len(success_emojis) else ""
-        st.success(succes_emoji + f"Tak for at svare på par {pair_idx}! Her er det næste par.")
+        st.success(
+            succes_emoji
+            + f"Tak! Dine svar for {pair_idx} er gemte og indsendte. Her er det næste par."
+        )
     else:
-        st.warning(f"Du svarede ikke på par {pair_idx} men du kan stadig tilbage til det.")
+        st.warning(
+            f"Du svarede ikke hvilken model du foretrak for par {pair_idx}, men du har stadig muligheden for at trykke tilbage og give din vurdering."
+        )
 
 
 def build_ab_test(examples: list[dict], survey: StreamlitSurvey, pair_idx: int):
@@ -150,9 +159,6 @@ def build_ab_test(examples: list[dict], survey: StreamlitSurvey, pair_idx: int):
     logger.debug("Displaying models %s and %s", *models)
 
     st.header(f"Hemmeligt par af sprogmodeller #:orange[{pair_idx + 1}] ud af {PAIRS_TO_SHOW} 🤖")
-    st.caption(
-        "Nu er der i hemmelighed valgt to modeller for dig: 🤖A og 🤖B. Afprøv dem ved at vælge en prompt under en kategori, der interesserer dig. Se modellernes svar og få et indtryk af både A og B. Vælg nu en ny prompt og giv endelig din vurdering efter mindst 3 prompts."
-    )
     show_status_message(survey, pair_idx)
     model_area = st.container()
     st.divider()
@@ -160,6 +166,13 @@ def build_ab_test(examples: list[dict], survey: StreamlitSurvey, pair_idx: int):
     with choose_col:
         chosen_prompt, new_chosen = build_prompt_choice(models, examples)
     with model_area:
+        st.subheader("2. Se modellernes svar")
         build_model_answers(chosen_prompt, new_chosen, models, examples)
+        if len(st.session_state["seen_prompts"][models]) > 1:
+            with st.expander("Se tidligere svar"):
+                for i, prompt in enumerate(st.session_state["seen_prompts"][models][:-1]):
+                    if i:
+                        st.divider()
+                    build_model_answers(prompt, False, models, examples)
     with answer_col:
         build_answer(models, survey)
