@@ -1,4 +1,6 @@
 from typing import Optional
+
+from streamlit_survey.pages import Pages
 from streamlit_survey import StreamlitSurvey
 
 import time
@@ -88,7 +90,7 @@ def build_model_answers(
                         st.write_stream(stream_data(sleep=False))
 
 
-def build_answer(models: tuple[str, str], survey: StreamlitSurvey):
+def build_answer(models: tuple[str, str], survey: StreamlitSurvey, pages: Pages):
     st.subheader("3. Giv din vurdering")
     has_seen = len(set(st.session_state["seen_prompts"][models]))
     was_revealed = st.session_state["was_revealed"][models]
@@ -128,6 +130,9 @@ def build_answer(models: tuple[str, str], survey: StreamlitSurvey):
         disabled=do_disable,
     )
 
+    nav_area = st.container()
+    pages.nav_context = nav_area
+
     if has_seen >= MIN_PROMPTS and survey.data[" ".join(models) + "-prefer"]["value"] != "Ved ikke":
         if st.button("Afslør modellerne (låser dine svar)", disabled=was_revealed):
             st.session_state["was_revealed"][models] = True
@@ -157,7 +162,8 @@ def show_status_message(survey: StreamlitSurvey, pair_idx: int):
         )
 
 
-def build_ab_test(examples: list[dict], survey: StreamlitSurvey, pair_idx: int):
+def build_ab_test(examples: list[dict], survey: StreamlitSurvey, pages: Pages):
+    pair_idx = pages.current - 1
     models = st.session_state["chosen_models"][pair_idx]
     logger.debug("Displaying models %s and %s", *models)
 
@@ -177,5 +183,7 @@ def build_ab_test(examples: list[dict], survey: StreamlitSurvey, pair_idx: int):
                     if i:
                         st.divider()
                     build_model_answers(prompt, False, models, examples)
+        if chosen_prompt is not None:
+            st.caption("Fortsæt ved at gå til toppen af siden igen.")
     with answer_col:
-        build_answer(models, survey)
+        build_answer(models, survey, pages)
