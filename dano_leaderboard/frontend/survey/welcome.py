@@ -8,11 +8,12 @@ def build_welcome(survey: StreamlitSurvey):
     welcome_col, demo_col = st.columns(2)
     with welcome_col:
         st.subheader("Velkommen")
-        st.info("Vil du bruge 5-10 minutter på at uforske sprogmodeller på dansk? 🤖🇩🇰", icon="ℹ️")
+        st.info("Vil du bruge 5-10 minutter på at udforske sprogmodeller på dansk? 🤖🇩🇰", icon="ℹ️")
         st.write("""\
             Læs svar fra sprogmodeller som ChatGPT og LlaMa for at hjælpe med at vurdere, hvor godt teknologien virker på dansk.
 
             Spørgeskemaet giver dig mulighed for at afprøve forskellige _prompts_ (spørgsmål, instruktioner og sproglige opgaver til kunstig intelligens) og se svar fra to sprogmodeller side om side.
+
             Din opgave er at afprøve mindst tre prompts for hvert par af sprogmodeller og så vurdere hvilken model, der svarede bedst.
             """)
         st.divider()
@@ -24,27 +25,49 @@ def build_welcome(survey: StreamlitSurvey):
         st.write(
             "Svar på et par personlige spørgsmål for at gøre undersøgelsen mere præcis eller gå direkte videre ved at trykke `Næste` nedenfor."
         )
-        survey.selectbox("Køn", options=["Ønsker ikke at svare", "Mand", "Kvinde"])
+        survey.selectbox(
+            "Køn",
+            options=[
+                "Mand",
+                "Kvinde",
+                "Ønsker ikke at svare",
+            ],
+            index=None,
+            placeholder="Vælg køn",
+        )
         survey.selectbox(
             "Aldersgruppe",
             options=[
-                "Ønsker ikke at svare",
                 "1-14",
                 "15-20",
                 "21-34",
                 "35-49",
                 "50-64",
                 "65+",
+                "Ønsker ikke at svare",
             ],
+            index=None,
+            placeholder="Vælg aldersgruppe",
         )
-        survey.selectbox("Modersmål", options=["Ønsker ikke at svare", "Dansk", "Et andet sprog"])
+        survey.selectbox(
+            "Modersmål",
+            options=[
+                "Dansk",
+                "Et andet sprog",
+                "Ønsker ikke at svare",
+            ],
+            index=None,
+            placeholder="Vælg modersmål",
+        )
         survey.selectbox(
             "Erfaring med kunstig intelligens",
             options=[
-                "Ønsker ikke at svare",
                 "Ingen erfaring",
                 "Mindre erfaring",
                 "Større erfaring på hobby-niveau",
                 "Professionel erfaring",
+                "Ønsker ikke at svare",
             ],
+            index=None,
+            placeholder="Vælg erfaring",
         )

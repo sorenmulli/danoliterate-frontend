@@ -88,9 +88,9 @@ def save_state(survey: ss.StreamlitSurvey):
 @st.experimental_dialog("Tak!")
 def goodbye_dialog():
     st.success(
-        "Din besvarelse er gemt. "
-        "Tusind tak for dit bidrag til undersøgelse af kunstig intelligens på dansk. Tøv ikke med at dele undersøgelsens link med andre. \n"
-        "Vi frabeder os, at du gentager spørgeskemaet."
+        "Din besvarelse er gemt.\n"
+        "Tusind tak for dit bidrag til undersøgelse af kunstig intelligens på dansk!\n"
+        "Tøv ikke med at dele undersøgelsen."
     )
     st.page_link("✨_Hello.py", label="➡️ Projektforside")
 

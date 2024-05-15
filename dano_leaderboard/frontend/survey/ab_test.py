@@ -52,8 +52,15 @@ def build_prompt_choice(
                     _color_cat(f"Prompt {n}:", cat) + " " + example["use_case"],
                     use_container_width=True,
                 ):
-                    st.write(example["prompt"].replace("\n", "\n\n"))
-                    if st.button("Prøv prompten", key=" ".join(models) + str(ex_idx)):
+                    popover = st.empty()
+                    with popover.container():
+                        st.write(example["prompt"].replace("\n", "\n\n"))
+                        choose_prompt = st.button(
+                            "Prøv prompten", key=" ".join(models) + str(ex_idx)
+                        )
+                    if choose_prompt:
+                        popover.caption("Se svaret nedenfor.")
+
                         st.session_state["seen_prompts"][models].append(ex_idx)
                         chosen_prompt = ex_idx
                         new_chosen = True
@@ -100,29 +107,32 @@ def build_answer(models: tuple[str, str], survey: StreamlitSurvey, pages: Pages)
     else:
         extra = " og du har fået afsløret modellerne." if was_revealed else "."
         progress_text = f"Du har set {has_seen} forskellige eksempler for disse modeller" + extra
-    st.progress(min(has_seen / MIN_PROMPTS, 1), text=progress_text)
+    st.progress(min(has_seen / MIN_PROMPTS, 1.0), text=progress_text)
     do_disable = was_revealed or has_seen < MIN_PROMPTS
 
     with st.container(border=True):
         survey.radio(
             "Hvilken model foretrak du?",
-            options=["Ved ikke", "🤖A", "🤖B"],
+            options=["🤖A", "🤖B", "Ved ikke"],
             id=" ".join(models) + "-prefer",
             horizontal=True,
+            index=None,
             disabled=do_disable,
         )
     survey.radio(
         "Hvad synes du om 🤖 A?",
-        options=["Ved ikke", "😞", "🙁", "😐", "🙂", "😀"],
+        options=["😞", "🙁", "😐", "🙂", "😀", "Ved ikke"],
         id=" ".join(models) + "-likert-A",
         horizontal=True,
+        index=None,
         disabled=do_disable,
     )
     survey.radio(
         "Hvad synes du om 🤖 B?",
-        options=["Ved ikke", "😞", "🙁", "😐", "🙂", "😀"],
+        options=["😞", "🙁", "😐", "🙂", "😀", "Ved ikke"],
         id=" ".join(models) + "-likert-B",
         horizontal=True,
+        index=None,
         disabled=do_disable,
     )
     survey.text_input(
@@ -134,7 +144,7 @@ def build_answer(models: tuple[str, str], survey: StreamlitSurvey, pages: Pages)
     nav_area = st.container()
     pages.nav_context = nav_area
 
-    if has_seen >= MIN_PROMPTS and survey.data[" ".join(models) + "-prefer"]["value"] != "Ved ikke":
+    if has_seen >= MIN_PROMPTS and survey.data[" ".join(models) + "-prefer"]["value"] is not None:
         if st.button("Afslør modellerne (låser dine svar)", disabled=was_revealed):
             st.session_state["was_revealed"][models] = True
             st.rerun()
@@ -150,12 +160,12 @@ def show_status_message(survey: StreamlitSurvey, pair_idx: int):
         )
         return
     prev_models_key = " ".join(st.session_state["chosen_models"][pair_idx - 1]) + "-prefer"
-    if prev_models_key in survey.data and survey.data[prev_models_key]["value"] != "Ved ikke":
+    if prev_models_key in survey.data and survey.data[prev_models_key]["value"] is not None:
         success_emojis = "🔥 ", "🎇 ", "🎆 ", "👌 ", "🙌 "
         succes_emoji = success_emojis[pair_idx - 1] if pair_idx <= len(success_emojis) else ""
         st.success(
             succes_emoji
-            + f"Tak! Din besvarelse for par {pair_idx} er gemt og indsendte. Her er det næste par."
+            + f"Tak! Din besvarelse for par {pair_idx} er gemt og indsendt. Her er det næste par."
         )
     else:
         st.warning(

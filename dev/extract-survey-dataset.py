@@ -36,16 +36,12 @@ def main(input_dir: str, output_file: str):
         for i, models in enumerate(data["chosen_models"]):
             model_pairs += 1
             models_key = " ".join(models)
-            models_data = {}
-            got_non_default = False
-            for field in ANSWER_FIELDS:
-                if (key := f"{models_key}-{field}") in data["answers"]:
-                    models_data[field] = val = (
-                        data["answers"][key]["value"].replace("🤖", "").strip()
-                    )
-                    if val and val != "Ved ikke":
-                        got_non_default = True
-            if got_non_default:
+            models_data = {
+                field: data["answers"][key]["value"].replace("🤖", "").strip()
+                for field in ANSWER_FIELDS
+                if (key := f"{models_key}-{field}") in data["answers"]
+            }
+            if any(models_data.values()):
                 output_examples += 1
                 data_examples.append(
                     {
