@@ -95,7 +95,8 @@ def goodbye_dialog():
     st.page_link("✨_Hello.py", label="➡️ Projektforside")
 
 
-def goodbye():
+def goodbye(survey: ss.StreamlitSurvey):
+    save_state(survey)
     st.balloons()
     goodbye_dialog()
 
@@ -103,7 +104,7 @@ def goodbye():
 def build_survey_pages():
     survey = ss.StreamlitSurvey("dano-llm-eval")
     examples = set_up_state()
-    pages = survey.pages(PAIRS_TO_SHOW + 1, on_submit=goodbye)
+    pages = survey.pages(PAIRS_TO_SHOW + 1, on_submit=lambda: goodbye(survey))
     pages.progress_bar = False
     pages.prev_button = lambda pages: st.button(
         "Tilbage",
