@@ -155,11 +155,11 @@ def show_status_message(survey: StreamlitSurvey, pair_idx: int):
         succes_emoji = success_emojis[pair_idx - 1] if pair_idx <= len(success_emojis) else ""
         st.success(
             succes_emoji
-            + f"Tak! Dine svar for {pair_idx} er gemte og indsendte. Her er det næste par."
+            + f"Tak! Din besvarelse for par {pair_idx} er gemt og indsendte. Her er det næste par."
         )
     else:
         st.warning(
-            f"Du svarede ikke hvilken model du foretrak for par {pair_idx}, men du har stadig muligheden for at trykke tilbage og give din vurdering."
+            f"Du valgte ikke foretrukken model for par {pair_idx}, men du har stadig mulighed for at trykke tilbage og give din vurdering."
         )
 
 

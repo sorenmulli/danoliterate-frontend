@@ -29,8 +29,9 @@ def main(input_dir: str, output_file: str):
             "user-experience": data["answers"]["Erfaring med kunstig intelligens"]["value"],
             "session-id": data["user_id"],
             "session-all-chosen-models": data["chosen_models"],
-            "session-all-was_revelead": data["was_revealed"],
-            "session-all-seen_prompts": data["seen_prompts"],
+            "session-all-was-revelead": data["was_revealed"],
+            "session-all-seen-prompts": data["seen_prompts"],
+            "session-timestamp": newest.stem,
         }
         for i, models in enumerate(data["chosen_models"]):
             model_pairs += 1
@@ -58,7 +59,7 @@ def main(input_dir: str, output_file: str):
                     }
                 )
     print(
-        f"Extracted {output_examples} examples from {model_pairs} model pairs of {ids_with_content} users with {ids} ids"
+        f"Extracted {output_examples} examples from {model_pairs} model pairs of {ids_with_content} sessions with data from {ids} total sessions"
     )
     Path(output_file).write_text("".join(json.dumps(ex) + "\n" for ex in data_examples))
     print(f"Saved to {output_file}")
