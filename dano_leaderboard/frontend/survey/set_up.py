@@ -32,7 +32,6 @@ def set_up_state() -> list[dict]:
     if "chosen_models" not in st.session_state:
         if len(all_models) < 2 * PAIRS_TO_SHOW:
             raise ValueError("Too few models!")
-        np.random.seed(0)
         st.session_state["chosen_models"] = [
             tuple(models)
             for models in np.random.choice(
@@ -42,7 +41,8 @@ def set_up_state() -> list[dict]:
             ).reshape(-1, 2)
         ]
         logger.info(
-            "Chose models %s",
+            "User %s got models %s",
+            st.session_state["user_id"],
             ", ".join(str(models) for models in st.session_state["chosen_models"]),
         )
     if "seen_prompts" not in st.session_state:
@@ -57,7 +57,11 @@ def set_up_state() -> list[dict]:
         categories = sorted(set(example["category"] for example in examples))
         shuffle(categories)
         st.session_state["category_order"] = categories
-
+    if "example_order" not in st.session_state:
+        example_order = list(range(len(examples)))
+        shuffle(example_order)
+        st.session_state["example_order"] = example_order
+    examples = [examples[i] for i in st.session_state["example_order"]]
     return examples
 
 
