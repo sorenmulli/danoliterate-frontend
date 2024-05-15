@@ -104,10 +104,32 @@ def build_survey_pages():
     survey = ss.StreamlitSurvey("dano-llm-eval")
     examples = set_up_state()
     pages = survey.pages(PAIRS_TO_SHOW + 1, on_submit=goodbye)
+    pages.progress_bar = False
+    pages.prev_button = lambda pages: st.button(
+        "Tilbage",
+        use_container_width=True,
+        disabled=pages.current == 0,
+        on_click=pages.previous,
+        key=f"{pages.current_page_key}_btn_prev",
+    )
+    pages.next_button = lambda pages: st.button(
+        "Næste",
+        type="primary",
+        use_container_width=True,
+        on_click=pages.next,
+        disabled=pages.current == pages.n_pages - 1,
+        key=f"{pages.current_page_key}_btn_next",
+    )
+    pages.submit_button = lambda pages: st.button(
+        "Indsend",
+        type="primary",
+        use_container_width=True,
+        key=f"{pages.current_page_key}_btn_submit",
+    )
 
     with pages:
         if pages.current == 0:
             build_welcome(survey)
         else:
-            build_ab_test(examples, survey, pages.current - 1)
+            build_ab_test(examples, survey, pages)
         save_state(survey)
