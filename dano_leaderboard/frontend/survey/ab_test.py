@@ -43,7 +43,8 @@ def build_prompt_choice(
     for cat, tab in zip(categories, tabs):
         n = 1
         with tab, st.container(height=250, border=False):
-            for i, example in enumerate(examples):
+            for ex_idx in st.session_state["example_order"]:
+                example = examples[ex_idx]
                 if example["category"] != cat:
                     continue
 
@@ -52,9 +53,9 @@ def build_prompt_choice(
                     use_container_width=True,
                 ):
                     st.write(example["prompt"].replace("\n", "\n\n"))
-                    if st.button("Prøv prompten", key=" ".join(models) + str(i)):
-                        st.session_state["seen_prompts"][models].append(i)
-                        chosen_prompt = i
+                    if st.button("Prøv prompten", key=" ".join(models) + str(ex_idx)):
+                        st.session_state["seen_prompts"][models].append(ex_idx)
+                        chosen_prompt = ex_idx
                         new_chosen = True
 
                 n += 1
