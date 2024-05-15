@@ -8,19 +8,21 @@ import streamlit as st
 from .infrastructure import MIN_PROMPTS, PAIRS_TO_SHOW, STREAM_SLEEP, logger
 
 
-def _color_cat(category: str) -> str:
+def _color_cat(text: str, category: str) -> str:
     match category[0]:
         case "R":
-            return f":green[{category}]"
+            return f":green[{text}]"
         case "F":
-            return f":red[{category}]"
+            return f":red[{text}]"
         case "P":
-            return f":violet[{category}]"
+            return f":violet[{text}]"
         case "L":
-            return f":orange[{category}]"
+            return f":orange[{text}]"
         case "S":
-            return f":blue[{category}]"
-    return category
+            return f":blue[{text}]"
+        case "T":
+            return f"**{text}**"
+    return text
 
 
 def build_prompt_choice(
@@ -34,7 +36,7 @@ def build_prompt_choice(
         else st.session_state["seen_prompts"][models][-1]
     )
     categories = st.session_state["category_order"]
-    tabs = st.tabs([_color_cat(cat) for cat in categories])
+    tabs = st.tabs([_color_cat(cat, cat) for cat in categories])
     for cat, tab in zip(categories, tabs):
         n = 1
         with tab, st.container(height=250, border=False):
@@ -43,7 +45,7 @@ def build_prompt_choice(
                     continue
 
                 with st.popover(
-                    f"Prompt {n}: {example['use_case']}",
+                    _color_cat(f"Prompt {n}:", cat) + " " + example["use_case"],
                     use_container_width=True,
                 ):
                     st.write(example["prompt"].replace("\n", "\n\n"))
@@ -74,7 +76,7 @@ def build_model_answers(
                     if sleep:
                         time.sleep(STREAM_SLEEP)
 
-            with col:
+            with col, st.container(border=True):
                 with st.chat_message("assistant"):
                     st.write(f"**Model {emoji}**:\n")
                     if new_chosen:
@@ -88,12 +90,11 @@ def build_answer(models: tuple[str, str], survey: StreamlitSurvey):
     has_seen = len(set(st.session_state["seen_prompts"][models]))
     was_revealed = st.session_state["was_revealed"][models]
     if has_seen < MIN_PROMPTS:
-        st.caption(
-            f"Du har kun set :orange[{has_seen}] forskellige eksempler. Se mindst :blue[{MIN_PROMPTS}] for at bedømme."
-        )
+        progress_text = f"Du har kun set :orange[{has_seen}] forskellige eksempler. Se mindst :blue[{MIN_PROMPTS}] for at bedømme."
     else:
         extra = " og du har fået afsløret modellerne" if was_revealed else ""
-        st.caption(f"Du har set {has_seen} forskellige eksempler for disse modeller" + extra)
+        progress_text = "Du har set {has_seen} forskellige eksempler for disse modeller" + extra
+    st.progress(min(has_seen / MIN_PROMPTS, 1), text=progress_text)
     do_disable = was_revealed or has_seen < MIN_PROMPTS
 
     survey.radio(
