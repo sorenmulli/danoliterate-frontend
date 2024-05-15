@@ -8,7 +8,7 @@ def build_welcome(survey: StreamlitSurvey):
     welcome_col, demo_col = st.columns(2)
     with welcome_col:
         st.subheader("Velkommen")
-        st.info("Vil du bruge 5 minutter på at lege med sprogmodeller på dansk? 🤖🇩🇰", icon="ℹ️")
+        st.info("Vil du bruge 5-10 minutter på at uforske sprogmodeller på dansk? 🤖🇩🇰", icon="ℹ️")
         st.write("""\
             Læs svar fra sprogmodeller som ChatGPT og LlaMa for at hjælpe med at vurdere, hvor godt teknologien virker på dansk.
 
@@ -17,7 +17,7 @@ def build_welcome(survey: StreamlitSurvey):
             """)
         st.divider()
         st.write("""
-            Spørgeskemaet er bygget af Søren Vejlgaard Holm, Lars Kai Hansen og Martin Carsten Nielsen som en del af Danoliterate-projektet på [DTU Compute](https://www.compute.dtu.dk/) under [Pionércenteret for Kunstig Intelligens](https://www.aicentre.dk/) og med samarbejde med [Alvenir](https://www.alvenir.ai/).
+            Spørgeskemaet er bygget af Søren Vejlgaard Holm, Lars Kai Hansen og Martin Carsten Nielsen som en del af Danoliterate-projektet på [DTU Compute](https://www.compute.dtu.dk/) under [Pionércenteret for Kunstig Intelligens](https://www.aicentre.dk/) og i samarbejde med [Alvenir](https://www.alvenir.ai/).
             Hvis du har spørgsmål, kan du kontakte swiho@dtu.dk eller læse mere om arbejdet på [danoliterate.compute.dtu.dk](https://danoliterate.compute.dtu.dk/). """)
     with demo_col:
         st.subheader("Baggrund")
