@@ -163,9 +163,9 @@ def build_ab_test(examples: list[dict], survey: StreamlitSurvey, pair_idx: int):
 
     st.header(f"Hemmeligt par af sprogmodeller #:orange[{pair_idx + 1}] ud af {PAIRS_TO_SHOW} 🤖")
     show_status_message(survey, pair_idx)
-    model_area = st.container()
-    st.divider()
     choose_col, answer_col = st.columns([2, 1])
+    st.divider()
+    model_area = st.container()
     with choose_col:
         chosen_prompt, new_chosen = build_prompt_choice(models, examples)
     with model_area:
