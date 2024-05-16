@@ -87,7 +87,7 @@ def build_model_answers(
                         if i < 120:
                             time.sleep(STREAM_SLEEP)
                         else:
-                            time.sleep(STREAM_SLEEP / 5)
+                            time.sleep(STREAM_SLEEP / 10)
 
             with col, st.container(border=True):
                 with st.chat_message("assistant"):
