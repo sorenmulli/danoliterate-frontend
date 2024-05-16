@@ -37,7 +37,7 @@ def main(input_dir: str, output_file: str):
             model_pairs += 1
             models_key = " ".join(models)
             models_data = {
-                field: data["answers"][key]["value"].replace("🤖", "").strip()
+                field: (data["answers"][key]["value"] or "").replace("🤖", "").strip()
                 for field in ANSWER_FIELDS
                 if (key := f"{models_key}-{field}") in data["answers"]
             }
