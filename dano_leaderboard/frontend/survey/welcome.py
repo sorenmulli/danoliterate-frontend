@@ -19,7 +19,10 @@ def build_welcome(survey: StreamlitSurvey):
         st.divider()
         st.write("""
             Spørgeskemaet er bygget af Søren Vejlgaard Holm, Lars Kai Hansen og Martin Carsten Nielsen som en del af Danoliterate-projektet på [DTU Compute](https://www.compute.dtu.dk/) under [Pionércenteret for Kunstig Intelligens](https://www.aicentre.dk/) og i samarbejde med [Alvenir](https://www.alvenir.ai/).
-            Hvis du har spørgsmål, kan du kontakte swiho@dtu.dk eller læse mere om arbejdet på [danoliterate.compute.dtu.dk](https://danoliterate.compute.dtu.dk/). """)
+            Hvis du har spørgsmål, kan du kontakte swiho@dtu.dk eller læse mere om arbejdet på [danoliterate.compute.dtu.dk](https://danoliterate.compute.dtu.dk/).
+
+            Støttet af det Danske Pioneer Centre for AI, DNRF bevilling P1.
+            """)
     with demo_col:
         st.subheader("Baggrund")
         st.write(

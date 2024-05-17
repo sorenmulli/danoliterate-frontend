@@ -21,6 +21,8 @@ It was supervised by
 
 - Martin Carsten Nielsen, Alvenir
 
+This work was supported by the Pioneer Centre for AI, DNRF grant number P1.
+
 ## How can I :blue[contribute]?
 By adding models, scenarios, improving code or giving your suggestions!
 Get in touch on `swiho@dtu.dk` or on [the evaluation GitHub repo](https://github.com/sorenmulli/danoliterate) or for this [frontend GitHub repo](https://github.com/sorenmulli/danoliterate-frontend/).
