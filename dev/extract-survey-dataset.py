@@ -20,7 +20,6 @@ def main(input_dir: str, output_file: str):
             newest = next(iter(sorted(user_id.glob("*.json"))[::-1]))
         except StopIteration:
             continue
-        ids_with_content += 1
         data = json.loads(newest.read_text())
         common_data = {
             "user-gender": data["answers"]["Køn"]["value"],
@@ -33,6 +32,8 @@ def main(input_dir: str, output_file: str):
             "session-all-seen-prompts": data["seen_prompts"],
             "session-timestamp": newest.stem,
         }
+
+        any_content = False
         for i, models in enumerate(data["chosen_models"]):
             model_pairs += 1
             models_key = " ".join(models)
@@ -43,6 +44,7 @@ def main(input_dir: str, output_file: str):
             }
             if any(models_data.values()):
                 output_examples += 1
+                any_content = True
                 data_examples.append(
                     {
                         "model_A": models[0],
@@ -54,6 +56,8 @@ def main(input_dir: str, output_file: str):
                         **common_data,
                     }
                 )
+        if any_content:
+            ids_with_content += 1
     print(
         f"Extracted {output_examples} examples from {model_pairs} model pairs of {ids_with_content} sessions with data from {ids} total sessions"
     )
