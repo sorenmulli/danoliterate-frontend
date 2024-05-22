@@ -61,7 +61,6 @@ def set_up_state() -> list[dict]:
         example_order = list(range(len(examples)))
         shuffle(example_order)
         st.session_state["example_order"] = example_order
-    examples = [examples[i] for i in st.session_state["example_order"]]
     return examples
 
 
