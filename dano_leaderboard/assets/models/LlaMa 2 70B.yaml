@@ -1,5 +1,5 @@
 closed: false
 instruct: true
-model: LlaMa 2 70B (@ Groq)
+model: LlaMa 2 (@ Groq)
 params: 69
 description: Llama3 70B Chat hosted on GroqCloud
