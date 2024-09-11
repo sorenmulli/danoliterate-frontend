@@ -1,13 +1,13 @@
 from collections import defaultdict
 import streamlit as st
 import pandas as pd
-
 from ..backend.data import Result, ResultDump
 from ..constants import ASSETS_PATH, RESULT_PATH
 from .result_parsing import DIMENSIONS_TO_METRICS, select_results
 from .table import CLOSED_EMOJI, INSTRUCT_EMOJI, PARAMS_EMOJI, WIN_EMOJI, construct_table
 from .details import METRIC_DICT, MODELS, SCENARIOS
 from .survey.set_up import build_survey_pages
+from .articles import ALL_ARTICLES
 
 
 def set_global_style(wide=False, title="Danoliterate Benchmark", sidebar="auto"):
@@ -225,3 +225,15 @@ Inspect some model outputs on the benchmark from selected models.
 def build_survey():
     set_global_style(wide=True, title="Spørgeskema [Da.]", sidebar="collapsed")
     build_survey_pages()
+
+def build_articles():
+    set_global_style(title="Articles")
+    st.title("Articles about the Danoliterate Benchmark")
+    st.caption("Presentations and press coverage of the benchmark. Expand to read more.")
+    for i, article in enumerate(ALL_ARTICLES):
+        if i:
+            st.divider()
+        st.header(article.title)
+        st.write(f"**{article.teaser}**")
+        st.caption(f"{article.date.strftime('%Y-%m-%d')}")
+        article.content()
