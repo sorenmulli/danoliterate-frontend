@@ -1,4 +1,4 @@
-# After 
+# After
 # 1. Installing Python 3.11
 # 2. Cloning the repo to home dir
 # 3. Installing the Python package in the repo, making sure that run.sh works.
@@ -25,7 +25,8 @@ sudo systemctl enable danoliterate-server
 
 ## D. Start the server
 # Start the service and check status
-sudo systemctl start danoliterate-server 
+python -m dano_leaderboard.frontend.modify_index_tags
+sudo systemctl start danoliterate-server
 sudo systemctl status danoliterate-server
 # Reload nginx to apply proxy changes
 sudo systemctl reload nginx

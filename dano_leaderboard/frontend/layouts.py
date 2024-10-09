@@ -8,7 +8,28 @@ from .table import CLOSED_EMOJI, INSTRUCT_EMOJI, PARAMS_EMOJI, WIN_EMOJI, constr
 from .details import METRIC_DICT, MODELS, SCENARIOS
 from .survey.set_up import build_survey_pages
 from .articles import ALL_ARTICLES
+from bs4 import BeautifulSoup
+from pathlib import Path
 
+def modify_tag_content(tag_name: str, new_content: str):
+    # Source for this:
+    # https://discuss.streamlit.io/t/updating-title-description-of-app-in-google-search/61447/5
+    index_path = Path(st.__file__).parent / "static" / "index.html"
+    soup = BeautifulSoup(index_path.read_text(), features="html.parser")
+
+    if not (backup := index_path.with_suffix(".bck")).exists():
+        backup.write_text(str(soup))
+
+    if (target_tag := soup.find(tag_name)):
+        target_tag.string = new_content
+    else:
+        target_tag = soup.new_tag(tag_name)
+        target_tag.string = new_content
+        if tag_name in {"title", "script", "noscript"} and soup.head:
+            soup.head.append(target_tag)
+        elif soup.body:
+            soup.body.append(target_tag)
+    index_path.write_text(str(soup))
 
 def set_global_style(wide=False, title="Danoliterate Benchmark", sidebar="auto"):
     st.set_page_config(
@@ -16,6 +37,14 @@ def set_global_style(wide=False, title="Danoliterate Benchmark", sidebar="auto")
         page_icon="🇩🇰",
         layout="wide" if wide else "centered",
         initial_sidebar_state=sidebar,
+    )
+    # To fix title in Google Search and links
+    modify_tag_content("title", title)
+    modify_tag_content("noscript",
+        "The Danoliterate Benchmark from the Technical University of Denmark. "
+        "Evaluating models like GPT-4, LlaMa and Claude in Danish. "
+        "See learderboards, take the survey, read articles and inspect further result details. "
+        "You need to enable JavaScript to run this app. "
     )
     # Source for this:
     # https://discuss.streamlit.io/t/remove-made-with-streamlit-from-bottom-of-app/1370/17

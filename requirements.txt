@@ -4,3 +4,4 @@ pandas
 numpy
 matplotlib
 datasets
+BeautifulSoup4
