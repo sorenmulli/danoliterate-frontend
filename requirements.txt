@@ -5,3 +5,7 @@ numpy
 matplotlib
 datasets
 BeautifulSoup4
+seaborn
+statsmodels
+networkx
+scipy
