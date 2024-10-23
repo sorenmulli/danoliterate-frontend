@@ -12,6 +12,7 @@ from matplotlib import pyplot as plt
 
 RENAME = {
     None: "       N/A",
+    "": "               N/A",
     "Mand": "Male",
     "Kvinde": "Female",
     "Professionel erfaring": "  Professional",
@@ -20,6 +21,7 @@ RENAME = {
     "Ingen erfaring": "     None",
     "Dansk": " Danish",
     "Et andet sprog": " Another Language",
+    "Ved ikke": " Don't know",
 }
 
 BASE = 10

@@ -117,7 +117,7 @@ def display_results(survey_df):
     )
     st.write(
         "But the most interesting thing: *The ranking!* "
-        f"We have a dataset of `{len(survey_df)}` pairwise preferences and want to transform that into one overall ranking."
+        f"We have a dataset of `{len(survey_df)}` pairwise preferences and want to transform that into one overall ranking. "
         "This classical problem in the literature of learning to rank is approached by the authors of the LmSys Chatbot Arena "
         "using the Bradley-Terry model [chiang-et-al]. The central modelling decision is to estimate the probablity that model $m_A$ "
         "is preferred over model $m_B$ logistically as"
@@ -129,12 +129,14 @@ def display_results(survey_df):
     )
     bradley_terry_results = compute_bradley_terry(survey_df)
     st.write(
-        r"The coefficient $\theta_m$ thus induces a ranking (higher is better) as well as an uncertainty, shown below"
+        r"The coefficient $\theta_m$ thus induces a ranking (higher is better) as well as an uncertainty. "
+        "Our found estimates of both are shown below:"
     )
     # TODO: Consider to prettify table
     st.dataframe(bradley_terry_results)
     st.write(
-            "Below these results are visualized. They are scaled from [-1, 1] to [0, 100] and pairwise statistical significance is shown: "
+            "In the below figure these results visualized. "
+            "Here, they are scaled from [-1, 1] to [0, 100] and pairwise statistical significance is shown: "
             "If there is no significant difference at $\\alpha=0.05$ between two models, their nodes are connected. "
             "The pairwise tests have been Benjamini-Hochberg corrected for multiple comparisons."
     )
@@ -183,9 +185,9 @@ prompt corresponding to this description.
 Now, for all 100 prompts, outputs of 18 GLLMs, both open-source and closed were computed and saved.
 
 When users go to the interactive survey site, they are presented with a number of A/B tests between
-two secret models: A and B.
+two anonymous models: A and B.
 The users can then freely select between the 100 prompts divided into 7 categories presented in random order and
-see the output of the two secret models generated one word at a time to simulate a real-time chat experience.
+see the output of the two anonymous models generated one word at a time to simulate a real-time chat experience.
 
 The user is required to see outputs on at least three prompts before they can fill out their judgement consisting of
 
@@ -216,11 +218,12 @@ All data is saved live during interaction.
 The results show a significant ranking with different tiers of models.
 Claude models from Anthropic AI generally rank higher in the human preferences than in the automatic benchmark.
 Like the automatic benchmark, the open-source models lack behind OpenAI, Google and Anthropic GLLMs.
+Model sizes can be seen in the [leaderboard](https://danoliterate.compute.dtu.dk/Leaderboard).
 
 The comparison to the automatic benchmark is a crucial result of the survey: Can we trust scenario-based
 benchmarking to give a good indication of human preferences?
 Not too bad, it seems!
-For the October 2024 version of automatic and survey benchmark results, we see a rank correlation of $\\rho \\sim 0.8.$.
+For the October 2024 version of automatic and survey benchmark results, we see a rank correlation of $\\rho \\sim 0.8$.
 Automatic benchmarking appears to be a useful tool for this technology.
 
 However, the survey is small-scale and with a narrow user group:
