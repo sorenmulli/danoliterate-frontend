@@ -1,0 +1,5 @@
+closed: false
+instruct: true
+model: LlaMa 3.2 90B Text Preview (@ Groq)
+params: 88.6
+description: Llama3.2 90B Instruct hosted on GroqCloud
