@@ -1,0 +1,4 @@
+closed: false
+instruct: true
+model: NB LlaMa 3.2 3B Instruct
+params: 3.21

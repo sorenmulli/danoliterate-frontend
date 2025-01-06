@@ -1,0 +1,4 @@
+closed: false
+instruct: true
+model: Teuken 7B Instruct (research v0.4)
+params: 7.45

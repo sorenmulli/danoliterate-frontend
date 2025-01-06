@@ -1,0 +1,4 @@
+closed: false
+instruct: true
+model: Gemma 2 2B Instruct
+params: 2.61

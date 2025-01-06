@@ -1,0 +1,4 @@
+closed: false
+instruct: true
+model: EuroLLM 9B
+params: 9.15

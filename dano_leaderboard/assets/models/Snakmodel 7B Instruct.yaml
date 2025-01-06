@@ -1,0 +1,4 @@
+closed: false
+instruct: true
+model: Snakmodel 7B Instruct
+params: 6.74
